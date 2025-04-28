@@ -1,0 +1,22 @@
+<nav class="navbar navbar-expand-lg" style="background-color: #1E3A8A;">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white fw-bold" href="/">Stockify</a>
+    <button class="navbar-toggler bg-white" …></button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link text-white <%= page==='dashboard' ? 'active fw-bold' : '' %>" href="/">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white <%= page==='produk' ? 'active fw-bold' : '' %>" href="/produk">Produk</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white <%= page==='kategori' ? 'active fw-bold' : '' %>" href="/kategori">Kategori</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white <%= page==='transaksi' ? 'active fw-bold' : '' %>" href="/transaksi">Transaksi</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

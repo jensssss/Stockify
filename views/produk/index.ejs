@@ -1,0 +1,159 @@
+<!-- Page Title and Add Product Button -->
+<div class="d-flex justify-content-between align-items-center mb-3 mt-5">
+  <h3 class="fw-bold">List Produk</h3>
+  <a href="/produk/tambah" class="btn btn-primary">Tambah Produk</a>
+</div>
+
+<!-- Filter/Search Bar -->
+<div class="mb-3">
+  <input type="text" class="form-control" id="search" placeholder="Search Products...">
+</div>
+
+<% if (msg.length !== 0) { %>
+  <div class="alert alert-success flash-message" role="alert"><%= msg %></div>
+<% } %>
+
+<!-- Product Table -->
+<div class="table-responsive">
+  <table class="table table-striped table-bordered">
+  <thead class="table-primary text-dark">
+      <tr>
+      <th>#</th>
+      <th>Nama Produk</th>
+      <th>Kategori</th>
+      <th>Harga</th>
+      <th>Stok</th>
+      <th>Aksi</th>
+      </tr>
+  </thead>
+  <tbody>
+    <% product.forEach((prod, index) => { %>
+      <tr>
+        <td><%= index + 1 %></td>
+        <td><%= prod.name %></td>
+        <!-- Menampilkan kategori dengan referensi categoryId -->
+        <td><%= prod.categoryId ? prod.categoryId.name : 'N/A' %></td>
+        <!-- Menampilkan harga jual -->
+        <td><%= rupiah(prod.sellingPrice) %></td>
+        <!-- Menampilkan stok -->
+        <td><%= prod.stock %></td>
+        <td>
+          <button 
+            class="btn btn-primary text-white btn-sm" 
+            data-bs-toggle="modal" 
+            data-bs-target="#detailModal" 
+            data-id="<%= prod._id %>"
+            data-sku="<%= prod.sku %>"
+            data-name="<%= prod.name %>"
+            data-category="<%= prod.categoryId ? prod.categoryId.name : 'N/A' %>"
+            data-purchase="<%= prod.purchasePrice %>"
+            data-selling="<%= prod.sellingPrice %>"
+            data-stock="<%= prod.stock %>"
+            data-minstock="<%= prod.minStock %>"
+            data-desc="<%= prod.description %>"
+            data-edit-link="/produk/edit/<%= prod._id %>"
+            data-delete-link="/produk/<%= prod._id %>?_method=DELETE"
+            >
+            Detail
+          </button>
+        </td>        
+      </tr>
+    <% }) %>
+  </tbody>  
+  </table>
+</div>
+
+<!-- Detail Modal -->
+<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="detailModalLabel">Detail Produk</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <dl class="row">
+          <dt class="col-sm-3 text-black">Nama Produk</dt>
+          <dd class="col-sm-9 text-black" id="modal-name"></dd>
+
+          <dt class="col-sm-3 text-black">SKU</dt>
+          <dd class="col-sm-9 text-black" id="modal-sku"></dd>
+
+          <dt class="col-sm-3 text-black">Kategori</dt>
+          <dd class="col-sm-9 text-black" id="modal-category"></dd>
+
+          <dt class="col-sm-3 text-black">Harga Beli</dt>
+          <dd class="col-sm-9 text-black" id="modal-purchase"></dd>
+
+          <dt class="col-sm-3 text-black">Harga Jual</dt>
+          <dd class="col-sm-9 text-black" id="modal-selling"></dd>
+
+          <dt class="col-sm-3 text-black">Stok</dt>
+          <dd class="col-sm-9 text-black" id="modal-stock"></dd>
+
+          <dt class="col-sm-3 text-black">Stok Minimum</dt>
+          <dd class="col-sm-9 text-black" id="modal-minstock"></dd>
+
+          <dt class="col-sm-3 text-black">Deskripsi</dt>
+          <dd class="col-sm-9 text-black" id="modal-desc"></dd>
+        </dl>
+      </div>
+      <div class="modal-footer">
+        <!-- Edit Button -->
+        <a href="#" id="modal-edit-btn" class="btn btn-warning btn-sm">Edit</a>
+        <!-- Delete Button inside form -->
+        <form id="modal-delete-form" method="POST" class="d-inline">
+          <input type="hidden" name="_method" value="DELETE">
+          <input type="hidden" name="id" id="modal-id-hidden" value="">
+          <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin?')">Delete</button>
+        </form>               
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Pagination -->
+<nav aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+  <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+  <li class="page-item"><a class="page-link" href="#">1</a></li>
+  <li class="page-item"><a class="page-link" href="#">2</a></li>
+  <li class="page-item"><a class="page-link" href="#">Next</a></li>
+  </ul>
+</nav>
+</div>
+
+<script>
+  const detailModal = document.getElementById('detailModal')
+  detailModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget;
+
+    document.getElementById('modal-name').textContent = button.getAttribute('data-name');
+    document.getElementById('modal-sku').textContent = button.getAttribute('data-sku');
+    document.getElementById('modal-category').textContent = button.getAttribute('data-category');
+    document.getElementById('modal-purchase').textContent = button.getAttribute('data-purchase');
+    document.getElementById('modal-selling').textContent = button.getAttribute('data-selling');
+    document.getElementById('modal-stock').textContent = button.getAttribute('data-stock');
+    document.getElementById('modal-minstock').textContent = button.getAttribute('data-minstock');
+    document.getElementById('modal-desc').textContent = button.getAttribute('data-desc');
+
+    document.getElementById('modal-id-hidden').value = button.getAttribute('data-id');
+    document.getElementById('modal-edit-btn').href = button.getAttribute('data-edit-link');
+    document.getElementById('modal-delete-form').action = button.getAttribute('data-delete-link');
+
+
+    // Automatically remove flash message with fade-out after 3 seconds
+    setTimeout(function() {
+      const flashMessage = document.querySelector('.flash-message');
+      if (flashMessage) {
+        flashMessage.classList.add('hidden'); // This triggers the fade-out effect
+        setTimeout(function() {
+          flashMessage.style.display = 'none'; // Hides the message completely after fade-out
+        }, 500); // Matches the CSS transition time
+      }
+    }, 3000); // 3000 milliseconds = 3 seconds
+  });
+</script>
+

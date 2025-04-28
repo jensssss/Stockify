@@ -1,0 +1,25 @@
+NPM Packages used:
+
+-- Required --
+npm init -y
+npm i express (express JS)
+npm i ejs (ejs extension)
+npm i express-ejs-layouts (ejs layouting)
+npm i mongoose (mongoDB mongoose)
+npm i method-override (method overriding)
+
+-- for validation --
+npm i validator
+
+-- for flash message --
+npm i express-session
+npm i cookie-parser
+npm i connect-flash
+
+npm i chart.js
+npm install slugify
+
+
+mongodb Path
+cd "C:\Program Files\MongoDB\Server\8.0\bin"
+

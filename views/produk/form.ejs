@@ -1,0 +1,128 @@
+<!-- Judul Halaman -->
+<h3 class="fw-bold mt-4"><%= isEdit ? "Edit Produk" : "Tambah Produk" %></h3>
+
+<!-- Form Tambah/Edit Produk -->
+<form action="<%= isEdit 
+    ? `/produk/edit/${produk._id}?_method=PUT`
+    : '/produk' 
+  %>" method="POST">
+
+  
+  <!-- Nama Produk -->
+  <div class="mb-3">
+    <label for="namaProduk" class="form-label">Nama Produk</label>
+    <input 
+      type="text" 
+      class="form-control" 
+      id="namaProduk" 
+      name="name" 
+      placeholder="Masukkan nama produk"
+      value="<%= isEdit ? produk.name : '' %>" 
+      required>
+  </div>
+
+  <!-- SKU (auto-generated, tidak perlu diisi manual) -->
+  <% if (!isEdit) { %>
+    <div class="mb-3">
+      <label for="sku" class="form-label">SKU</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="sku" 
+        name="sku" 
+        placeholder="SKU akan terisi otomatis"
+        value="<%= isEdit ? produk.sku : '' %>" 
+        readonly
+        required>
+    </div>
+  <% } %>
+
+  <!-- Kategori -->
+  <div class="mb-3">
+    <label for="kategori" class="form-label">Kategori</label>
+    <select class="form-select" name="categoryId" id="kategori" required>
+      <option value="" disabled <%= !isEdit ? 'selected' : '' %>>Pilih kategori</option>
+      <% category.forEach(cat => { %>
+        <option
+          value="<%= cat._id %>"
+          <%= (isEdit && produk.categoryId && produk.categoryId.toString() === cat._id.toString())
+               ? 'selected'
+               : '' %>
+        >
+          <%= cat.name %>
+        </option>
+      <% }) %>
+    </select>    
+  </div>
+
+ <!-- Harga Beli -->
+<div class="mb-3">
+  <label for="purchasePrice" class="form-label">Harga Beli</label>
+  <input 
+    type="number" 
+    class="form-control" 
+    id="purchasePrice" 
+    name="purchasePrice" 
+    placeholder="Masukkan harga beli produk"
+    value="<%= isEdit ? produk.purchasePrice : '' %>" 
+    required>
+</div>
+
+<!-- Harga Jual -->
+<div class="mb-3">
+  <label for="sellingPrice" class="form-label">Harga Jual</label>
+  <input 
+    type="number" 
+    class="form-control" 
+    id="sellingPrice" 
+    name="sellingPrice" 
+    placeholder="Masukkan harga jual produk"
+    value="<%= isEdit ? produk.sellingPrice : '' %>" 
+    required>
+</div>
+
+
+  <!-- Stok -->
+  <div class="mb-3">
+    <label for="stok" class="form-label">Stok</label>
+    <input 
+      type="number" 
+      class="form-control" 
+      id="stok" 
+      name="stock" 
+      placeholder="Masukkan stok produk"
+      value="<%= isEdit ? produk.stock : '' %>" 
+      required>
+  </div>
+
+  <!-- Stok Minimum -->
+  <div class="mb-3">
+    <label for="minStock" class="form-label">Stok Minimum</label>
+    <input 
+      type="number" 
+      class="form-control" 
+      id="minStock" 
+      name="minStock" 
+      placeholder="Masukkan stok minimum produk"
+      value="<%= isEdit ? produk.minStock : '' %>">
+  </div>
+
+  <!-- Deskripsi -->
+  <div class="mb-3">
+    <label for="description" class="form-label">Deskripsi</label>
+    <textarea 
+      class="form-control" 
+      id="description" 
+      name="description" 
+      placeholder="Masukkan deskripsi produk" 
+      rows="3"><%= isEdit ? produk.description : '' %></textarea>
+  </div>
+
+  <!-- Tombol Submit -->
+  <button type="submit" class="btn btn-primary mb-4">
+    <%= isEdit ? "Update Produk" : "Tambah Produk" %>
+  </button>
+
+  <!-- Tombol Batal -->
+  <a href="/produk" class="btn btn-secondary ms-2 mb-4">Batal</a>
+</form>
