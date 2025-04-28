@@ -40,9 +40,7 @@ Ensure you have Node.js and npm installed on your system.
 - [Download Node.js](https://nodejs.org/)
 
 ### Steps to run the project locally
-
-1. **Clone the repository:**
-   git clone https://github.com/jensssss/Stockify.git
-   cd Stockify
-   npm install (see in note.txt)
-   nodemon app
+- git clone https://github.com/jensssss/Stockify.git
+- cd Stockify
+- npm install (see all depedencies in note.txt)
+- nodemon app
